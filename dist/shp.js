@@ -30,7 +30,7 @@ function binaryAjax(url){
 }
 
 },{"buffer":7,"lie":35}],2:[function(require,module,exports){
-(function (global){
+(function (global){(function (){
 'use strict';
 var fallback = require('./binaryajax-browser');
 var Buffer = require('buffer').Buffer
@@ -58,7 +58,7 @@ module.exports = async function binaryAjax(url){
   }
 }
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./binaryajax-browser":1,"buffer":7}],3:[function(require,module,exports){
 'use strict';
 
@@ -513,7 +513,7 @@ function fromByteArray (uint8) {
 },{}],6:[function(require,module,exports){
 
 },{}],7:[function(require,module,exports){
-(function (global,Buffer){
+(function (global,Buffer){(function (){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -2304,7 +2304,7 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
 },{"base64-js":5,"buffer":7,"ieee754":8,"isarray":10}],8:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
@@ -2392,7 +2392,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 }
 
 },{}],9:[function(require,module,exports){
-(function (global){
+(function (global){(function (){
 'use strict';
 var Mutation = global.MutationObserver || global.WebKitMutationObserver;
 
@@ -2463,7 +2463,7 @@ function immediate(task) {
   }
 }
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],10:[function(require,module,exports){
 var toString = {}.toString;
 
@@ -3116,7 +3116,7 @@ module.exports = function(data, options) {
 };
 
 },{"./base64":12,"./utf8":31,"./utils":32,"./zipEntries":33}],22:[function(require,module,exports){
-(function (Buffer){
+(function (Buffer){(function (){
 'use strict';
 module.exports = function(data, encoding){
     return new Buffer(data, encoding);
@@ -3125,7 +3125,7 @@ module.exports.test = function(b){
     return Buffer.isBuffer(b);
 };
 
-}).call(this,require("buffer").Buffer)
+}).call(this)}).call(this,require("buffer").Buffer)
 },{"buffer":7}],23:[function(require,module,exports){
 'use strict';
 var Uint8ArrayReader = require('./uint8ArrayReader');
@@ -4102,7 +4102,7 @@ StringWriter.prototype = {
 module.exports = StringWriter;
 
 },{"./utils":32}],28:[function(require,module,exports){
-(function (Buffer){
+(function (Buffer){(function (){
 'use strict';
 exports.base64 = true;
 exports.array = true;
@@ -4138,7 +4138,7 @@ else {
     }
 }
 
-}).call(this,require("buffer").Buffer)
+}).call(this)}).call(this,require("buffer").Buffer)
 },{"buffer":7}],29:[function(require,module,exports){
 'use strict';
 var ArrayReader = require('./arrayReader');
@@ -12799,7 +12799,7 @@ function defaultDecoder(data) {
   return out.replace(/\0/g, '').trim();
 }
 module.exports = createDecoder;
-var regex = /^(?:ASNI\s)?(\d+)$/m;
+var regex = /^(?:ANSI\s)?(\d+)$/m;
 function createDecoder(encoding, second) {
   if (!encoding) {
     return defaultDecoder;
@@ -14798,6 +14798,9 @@ module.exports = function(buffer, encoding) {
           };
         }
         point = source.inverse(point); // Convert Cartesian to longlat
+        if (!point) {
+          return;
+        }
       }
       // Adjust for the prime meridian if necessary
       if (source.from_greenwich) {
@@ -17233,7 +17236,7 @@ module.exports = function(buffer, encoding) {
           if (this.mode === this.N_POLE) {
             coslam = -coslam;
           }
-          if (Math.abs(phi + this.phi0) < EPSLN) {
+          if (Math.abs(phi + this.lat0) < EPSLN) {
             return null;
           }
           y = FORTPI - phi * 0.5;
@@ -17332,7 +17335,7 @@ module.exports = function(buffer, encoding) {
           y = cosz * rh;
           break;
         case this.OBLIQ:
-          phi = (Math.abs(rh) <= EPSLN) ? this.phi0 : Math.asin(cosz * this.sinph0 + y * sinz * this.cosph0 / rh);
+          phi = (Math.abs(rh) <= EPSLN) ? this.lat0 : Math.asin(cosz * this.sinph0 + y * sinz * this.cosph0 / rh);
           x *= sinz * this.cosph0;
           y = (cosz - Math.sin(phi) * this.sinph0) * rh;
           break;
@@ -17353,8 +17356,8 @@ module.exports = function(buffer, encoding) {
           y *= this.dd;
           rho = Math.sqrt(x * x + y * y);
           if (rho < EPSLN) {
-            p.x = 0;
-            p.y = this.phi0;
+            p.x = this.long0;
+            p.y = this.lat0;
             return p;
           }
           sCe = 2 * Math.asin(0.5 * rho / this.rq);
@@ -17377,8 +17380,8 @@ module.exports = function(buffer, encoding) {
           }
           q = (x * x + y * y);
           if (!q) {
-            p.x = 0;
-            p.y = this.phi0;
+            p.x = this.long0;
+            p.y = this.lat0;
             return p;
           }
           ab = 1 - q / this.qp;
@@ -18660,7 +18663,7 @@ module.exports = function(buffer, encoding) {
           //default case
           cos_c = this.sin_p12 * sinphi + this.cos_p12 * cosphi * Math.cos(dlon);
           c = Math.acos(cos_c);
-          kp = c / Math.sin(c);
+          kp = c ? c / Math.sin(c) : 1;
           p.x = this.x0 + this.a * kp * cosphi * Math.sin(dlon);
           p.y = this.y0 + this.a * kp * (this.cos_p12 * sinphi - this.sin_p12 * cosphi * Math.cos(dlon));
           return p;
@@ -18724,7 +18727,7 @@ module.exports = function(buffer, encoding) {
     function inverse$24(p) {
       p.x -= this.x0;
       p.y -= this.y0;
-      var rh, z, sinz, cosz, lon, lat, con, e0, e1, e2, e3, Mlp, M, N1, psi, Az, cosAz, tmp, A, B, D, Ee, F;
+      var rh, z, sinz, cosz, lon, lat, con, e0, e1, e2, e3, Mlp, M, N1, psi, Az, cosAz, tmp, A, B, D, Ee, F, sinpsi;
       if (this.sphere) {
         rh = Math.sqrt(p.x * p.x + p.y * p.y);
         if (rh > (2 * HALF_PI * this.a)) {
@@ -18808,7 +18811,8 @@ module.exports = function(buffer, encoding) {
           F = 1 - A * Ee * Ee / 2 - D * Ee * Ee * Ee / 6;
           psi = Math.asin(this.sin_p12 * Math.cos(Ee) + this.cos_p12 * Math.sin(Ee) * cosAz);
           lon = adjust_lon(this.long0 + Math.asin(Math.sin(Az) * Math.sin(Ee) / Math.cos(psi)));
-          lat = Math.atan((1 - this.es * F * this.sin_p12 / Math.sin(psi)) * Math.tan(psi) / (1 - this.es));
+          sinpsi = Math.sin(psi);
+          lat = Math.atan2((sinpsi - this.es * F * this.sin_p12) * Math.tan(psi), sinpsi * (1 - this.es));
           p.x = lon;
           p.y = lat;
           return p;
@@ -19499,7 +19503,7 @@ module.exports = function(buffer, encoding) {
     proj4$1.defs = defs;
     proj4$1.transform = transform;
     proj4$1.mgrs = mgrs;
-    proj4$1.version = '2.6.1';
+    proj4$1.version = '2.6.2';
     includedProjections(proj4$1);
 
     return proj4$1;
@@ -23050,12 +23054,16 @@ module.exports = require("./lib/encoding.js");
 }(this || {}));
 
 },{"./encoding-indexes.js":6}],59:[function(require,module,exports){
-(function (global){
+(function (global){(function (){
 'use strict';
 var proj4 = require('proj4');
 if (proj4.default) {
   proj4 = proj4.default;
 }
+
+// Prevent issues when loaded within a worker in an Angular application
+if (!self.global) self.global = self;
+
 var unzip = require('./unzip');
 var binaryAjax = require('./binaryajax');
 var parseShp = require('./parseShp');
@@ -23221,6 +23229,6 @@ shp.parseDbf = function(dbf, cpg) {
 };
 module.exports = shp;
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./binaryajax":2,"./parseShp":3,"./unzip":4,"buffer":7,"lie":35,"lru-cache":36,"parsedbf":54,"proj4":55}]},{},[59])(59)
 });
